@@ -12,5 +12,9 @@
   "dependencies": {
     "lodash": "^3.10.0",
     "lodash-fp": "^0.10.0"
+  },
+  "devDependencies": {
+    "watchify": "~3.2.3",
+    "browserify": "~10.2.4"
   }
 }

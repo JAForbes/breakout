@@ -36,8 +36,8 @@ global._ = _
 var images = _.map(game.assets.images, load.image)
 
 Promise.all([
-	load.imageGroup(game.assets.images),
-	load.soundGroup(game.assets.sounds)
+	load.group(load.image, game.assets.images),
+	load.group(load.sound, game.assets.sounds)
 ]).then(function(loaded) {
 	game.assets.images = loaded[0]
 	game.assets.sounds = loaded[1]

@@ -11,14 +11,14 @@ var load = {
 		})
 	},
 
-	imageGroup: function(imageGroup){
+	group: function(loader, group){
 		return Promise.all(
-		    _.map(imageGroup,load.image)
+		    _.map(group,loader)
 		)
-		.then(function(images){
+		.then(function(loaded){
 		   return _.object(
-		    _.keys(imageGroup),
-		    images
+		    _.keys(group),
+		    loaded
 		  )
 		})
 	},
@@ -32,16 +32,5 @@ var load = {
 		})
 	},
 
-	soundGroup: function(soundGroup){
-		return Promise.all(
-		    _.map(soundGroup,load.sound)
-		)
-		.then(function(sounds){
-		   return _.object(
-		    _.keys(soundGroup),
-		    sounds
-		  )
-		})
-	},
 }
 module.exports = load
