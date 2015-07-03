@@ -1,0 +1,15 @@
+{
+  "name": "e",
+  "version": "0.0.0",
+  "description": "A breakout example using an Entity Component System",
+  "main": "e.js",
+  "scripts": {
+    "build": "browserify game.js -o bundle.js",
+    "watch": "watchify game.js -o bundle.js --debug --verbose"
+  },
+  "author": "james.a.forbes@gmail.com <=> (http://james-forbes.com)",
+  "license": "ISC",
+  "dependencies": {
+    "lodash-fp": "^0.10.0"
+  }
+}
