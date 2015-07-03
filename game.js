@@ -22,11 +22,11 @@ var game = {
 		}
 	},
 	states: {
-		loading: [],
-		intro: [],
-		breakout: [],
-		gameover: [],
-		gamecomplete: []
+		loading: require("./states/loading"),
+		intro: require("./states/intro"),
+		breakout: require("./states/breakout"),
+		gameover: require("./states/gameover"),
+		gamecomplete: require("./states/gamecomplete")
 	}
 }
 
