@@ -1,6 +1,7 @@
 var _ = require("lodash")
-var E = require("./entity_manager")
-var load = require("./load")
+var E = require("./engine/entity_manager")
+var load = require("./engine/load")
+var loop = require("./engine/loop")
 
 var game = {
 	active: {
@@ -29,6 +30,9 @@ var game = {
 	}
 }
 
+var controller = loop(game)
+
+global.controller = controller
 global.game = game
 global.load = load
 global._ = _
