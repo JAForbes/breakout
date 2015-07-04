@@ -38,10 +38,10 @@ var EntityManager = {
 
       .keys(components)
 
-      .reduce(function(results, name){
+      .forEach(function(name){
         var category = components[name]
 
-        if(category){
+        if(category && category[entity]){
           visitor( category, name, entity )
         }
       })
@@ -63,7 +63,12 @@ var EntityManager = {
   },
 
   component: function(entity, category){
-    return EntityManager._components[category] && EntityManager._components[category][entity]
+    var component = EntityManager._components[category] && EntityManager._components[category][entity]
+    if(typeof component == "number"){
+      return EntityManager._components[category][component]
+    } else {
+      return component
+    }
   },
 
   add: function(id, new_components){

@@ -3,32 +3,36 @@ var E = require("./engine/entity_manager")
 var load = require("./engine/load")
 var loop = require("./engine/loop")
 
-var game = {
-	active: {
-		state: "loading"
-	},
-	assets: {
-		images: {
-			logo: "resources/logo.png",
-			tiles: "resources/tiles.png",
-			bg: "resources/bg_prerendered.png"
+var game;
+
+E.create({
+	Game: game = {
+		active: {
+			state: "loading"
 		},
-		sounds: {
-			brickDeath: "resources/sfx/brickDeath.mp3",
-			countdownBlip: "resources/sfx/countdownBlip.mp3",
-			powerdown: "resources/sfx/powerdown.mp3",
-			powerup: "resources/sfx/powerup.mp3",
-			recover: "resources/sfx/recover.mp3"
+		assets: {
+			images: {
+				logo: "resources/logo.png",
+				tiles: "resources/tiles.png",
+				bg: "resources/bg_prerendered.png"
+			},
+			sounds: {
+				brickDeath: "resources/sfx/brickDeath.mp3",
+				countdownBlip: "resources/sfx/countdownBlip.mp3",
+				powerdown: "resources/sfx/powerdown.mp3",
+				powerup: "resources/sfx/powerup.mp3",
+				recover: "resources/sfx/recover.mp3"
+			}
+		},
+		states: {
+			loading: require("./states/loading"),
+			intro: require("./states/intro"),
+			breakout: require("./states/breakout"),
+			gameover: require("./states/gameover"),
+			gamecomplete: require("./states/gamecomplete")
 		}
-	},
-	states: {
-		loading: require("./states/loading"),
-		intro: require("./states/intro"),
-		breakout: require("./states/breakout"),
-		gameover: require("./states/gameover"),
-		gamecomplete: require("./states/gamecomplete")
 	}
-}
+})
 
 var controller = loop(game)
 
@@ -36,6 +40,7 @@ global.controller = controller
 global.game = game
 global.load = load
 global._ = _
+global.E = E
 //loading assets
 var images = _.map(game.assets.images, load.image)
 
