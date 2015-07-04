@@ -31,6 +31,11 @@ E.create({
 			gameover: require("./states/gameover"),
 			gamecomplete: require("./states/gamecomplete")
 		}
+	},
+
+	Canvas: {
+		canvas: game_canvas,
+		parent: game_content
 	}
 })
 

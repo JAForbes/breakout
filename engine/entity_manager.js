@@ -52,7 +52,7 @@ var EntityManager = {
   _entity: function(components, target, entity){
 
     EntityManager._entity_each(components, function(component, name){
-      target[name] = component
+      target[name] = component[entity]
     }, entity)
 
     return target;
@@ -64,7 +64,7 @@ var EntityManager = {
 
   component: function(entity, category){
     var component = EntityManager._components[category] && EntityManager._components[category][entity]
-    if(typeof component == "number"){
+    if(typeof component == "string"){
       return EntityManager._components[category][component]
     } else {
       return component
