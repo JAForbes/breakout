@@ -17,7 +17,8 @@ module.exports = {
 		var logo = E.create({
 			Sprite: { img: assets.images.logo },
 			Location: { x: 0, y: 0},
-			Centred: {}
+			Centred: {},
+			StateLifespan: {}
 		})
 	},
 
@@ -28,5 +29,8 @@ module.exports = {
 		sprite.draw
 	),
 
-	end: console.log.bind(console, "end", __filename )
+	end: function(){
+		Object.keys(E.category("StateLifespan"))
+			.forEach(E.removeEntity)
+	}
 }

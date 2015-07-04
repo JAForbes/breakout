@@ -91,9 +91,10 @@ var EntityManager = {
   },
 
   removeEntity: function(id){
+    console.log.apply(console, arguments)
     return EntityManager._entity_each(EntityManager._components, function(component, name){
-      delete EntityManager._components[name]
-    })
+      delete EntityManager._components[name][id]
+    }, id)
   },
 
   entity: function(entity){

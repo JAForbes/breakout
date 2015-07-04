@@ -2,7 +2,6 @@
 	#game_content {
 		width: 320;
 		height: 416;
-		background-color: rgba(255,0,0,0.25);
 	}
 	.center {
 	  position: absolute !important;
@@ -11,9 +10,20 @@
 	  top: 0;
 	  bottom: 0;
 	  margin: auto;
+	  text-align: center;
 	}
 	#game_canvas {
-		background-color: rgba(0,0,255,0.25);
+		z-index: 1000;
+	}
+	.loading-text{
+		text-align: center;
+		font-family: helvetica;
+		color: white;
+		position: absolute;
+
+		/*Hacky way of hiding loading once the canvas renders*/
+			z-index: -1000;
+			margin-top: 25%;
 	}
 	body {
 		background-color: black;
@@ -21,7 +31,9 @@
 </style>
 <body>
 	<div id="game_content" class="center">
+		<h1 class="loading-text center">Loading</h1>
 		<canvas id="game_canvas"></canvas>
+
 	</div>
 </body>
 <script src="bundle.js"></script>
