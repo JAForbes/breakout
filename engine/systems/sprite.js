@@ -30,27 +30,34 @@ function default_frame(sprite){
 	}
 }
 
+function setup(){
+
+	_.each(E.category("Sprite"), function(sprite, entity){
+		sprite.canvas = sprite.canvas || Object.keys( E.category("Canvas") )[0]
+
+		var dimensions = E.component(entity, "Dimensions")
+		if( !dimensions){
+			dimensions = default_dimensions(sprite)
+			E.addComponent("Dimensions", dimensions, entity)
+		}
+
+		var frame = E.component(entity, "Frame")
+
+		if(!frame){
+			frame = default_frame(sprite)
+			E.addComponent("Frame", frame, entity)
+		}
+	})
+
+}
+
 function draw_entity(entity) {
 
-	var dimensions = E.component(entity, "Dimensions")
-	if( !dimensions){
-		dimensions = default_dimensions(sprite)
-		E.addComponent("Dimensions", dimensions, entity)
-	}
-	var frame = E.component(entity, "Frame")
-
-	if(!frame){
-		frame = default_frame(sprite)
-		E.addComponent("Frame", frame, entity)
-	}
-
 	var sprite = E.component(entity, "Sprite")
-	sprite.canvas = sprite.canvas || Object.keys( E.category("Canvas") )[0]
-
+	var dimensions = E.component(entity, "Dimensions")
+	var frame = E.component(entity, "Frame")
 	var canvas = E.component(sprite.canvas, "Canvas")
 	var location = E.component(entity, "Location")
-	var con = canvas.context;
-
 
 
 	var index = frame.total_frames == 1 ? 1 : Math.floor(frame.index += play_speed)
@@ -66,7 +73,7 @@ function draw_entity(entity) {
 
 
 //Dependencies: Z-Index, Sprite, Location, Dimensions
-function Sprite(){
+function draw(){
 
 
 	var sprites = E.category("Sprite")
@@ -84,7 +91,7 @@ function Sprite(){
 
 }
 
-module.exports = [
-	require("./Canvas.js"),
-	Sprite
-]
+module.exports = {
+	draw: draw,
+	setup: setup
+}

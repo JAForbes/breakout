@@ -1,4 +1,7 @@
 var E = require("../engine/entity_manager.js")
+var _ = require("lodash")
+
+var sprite = require("../engine/systems/sprite.js")
 
 module.exports = {
 	start: function(){
@@ -10,10 +13,19 @@ module.exports = {
 			Sprite: { img: assets.images.bg },
 			Location: { x: 0, y: 0}
 		})
+
+		var logo = E.create({
+			Sprite: { img: assets.images.logo },
+			Location: { x: 0, y: 0},
+			Centred: {}
+		})
 	},
 
 	systems: [].concat(
-		require("../engine/systems/sprite.js")
+		require("../engine/systems/canvas.js"),
+		sprite.setup,
+		require("../engine/systems/centred.js"),
+		sprite.draw
 	),
 
 	end: console.log.bind(console, "end", __filename )
