@@ -65,9 +65,10 @@ function draw_entity(entity) {
 	var end = frame.end;
 	var cols = (end.x - start.x) / frame.width;
 	var rows = (end.y - start.y) / frame.height;
-	var source_x = (index * frame.width) % cols;
-	var source_y = (index * frame.height) % rows;
+	var source_x = start.x + (index * frame.width) % cols;
+	var source_y = start.y + (index * frame.height) % rows;
 
+	//if( sprite.img.src.indexOf("tiles") > -1) debugger;
 	canvas.context.drawImage( sprite.img, source_x, source_y, frame.width, frame.height, location.x, location.y, dimensions.width, dimensions.height )
 }
 
