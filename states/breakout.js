@@ -47,6 +47,7 @@ module.exports = {
 		hammer = require("../engine/systems/touch.js")(game_content)
 		mouse = require("../engine/systems/mouse.js")(game_content)
 
+		game_canvas.style.cursor = "none";
 		var assets = E.component(1, "Game").assets
 
 		var mouse = E.create({
@@ -105,6 +106,8 @@ module.exports = {
 	),
 
 	end: function(){
+		game_canvas.style.cursor = "default";
+
 		hammer.destroy()
 		hammer = null;
 		mouse.destroy()
