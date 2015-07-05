@@ -7,7 +7,8 @@ module.exports = {
 		require("../engine/systems/canvas.js"),
 		sprite.setup,
 		require("../engine/systems/centred.js"),
-		sprite.draw
+		sprite.draw,
+		require("../engine/systems/removal.js")
 	),
 
 	end: console.log.bind(console, "end", __filename )

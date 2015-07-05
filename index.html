@@ -1,4 +1,8 @@
 <style>
+	* {
+		-webkit-user-select : none;
+		cursor: default;
+	}
 	#game_content {
 		width: 320;
 		height: 416;
@@ -24,6 +28,18 @@
 		/*Hacky way of hiding loading once the canvas renders*/
 			z-index: -1000;
 			margin-top: 25%;
+	}
+	.dynamic-position{
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+	.black {
+		color: black;
+	}
+	#help_text {
+		color: white;
+		font-family: Helvetica;
 	}
 	body {
 		background-color: black;

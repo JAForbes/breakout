@@ -13,7 +13,6 @@ var EntityManager = {
   },
 
   _replaceComponent: function(components, id, component, name){
-
       //create category
       var category = components[name] = components[name] || {}
 
@@ -52,7 +51,7 @@ var EntityManager = {
   _entity: function(components, target, entity){
 
     EntityManager._entity_each(components, function(component, name){
-      target[name] = component[entity]
+      target[name] = EntityManager.component(entity, name)
     }, entity)
 
     return target;
@@ -62,9 +61,15 @@ var EntityManager = {
     return EntityManager._components[category]
   },
 
+  each: function(category, visitor){
+    Object.keys(E._components[category]).forEach(function(entity){
+      visitor( EntityManager.component(entity, category), entity)
+    })
+  },
+
   component: function(entity, category){
     var component = EntityManager._components[category] && EntityManager._components[category][entity]
-    if(typeof component == "string"){
+    if(typeof component == "string" || typeof component == "number"){
       return EntityManager._components[category][component]
     } else {
       return component
