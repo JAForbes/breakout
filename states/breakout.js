@@ -62,6 +62,19 @@ module.exports = {
 			StateLifespan: {}
 		})
 
+		var ball = E.create({
+			Frame: {
+				index: 0, play_speed: 0.2,
+				width: 16, height: 16,
+				start: { x:16*3, y: 16*4 },
+				end: { x: 16*7, y: 16*5},
+				total_frames: 5
+			},
+			Sprite: { img: assets.images.tiles },
+			Location: { x: 100, y: 100},
+			Dimensions: { width: 16, height: 16 }
+		});
+
 		var paddle = E.create({
 			Frame: {
 				index: 0, play_speed: 0,

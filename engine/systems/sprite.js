@@ -60,15 +60,14 @@ function draw_entity(entity) {
 	var location = E.component(entity, "Location")
 
 
-	var index = frame.total_frames == 1 ? 1 : Math.floor(frame.index += play_speed)
+	var index = frame.total_frames == 1 ? 1 : Math.floor(frame.index += frame.play_speed)
 	var start = frame.start;
 	var end = frame.end;
 	var cols = (end.x - start.x) / frame.width;
 	var rows = (end.y - start.y) / frame.height;
-	var source_x = start.x + (index * frame.width) % cols;
-	var source_y = start.y + (index * frame.height) % rows;
-
-	//if( sprite.img.src.indexOf("tiles") > -1) debugger;
+	var source_x = start.x + (index  % cols) * frame.width;
+	var source_y = start.y + (index  % rows) * frame.height;
+	if(entity == 10) console.log(index, (index * frame.width))
 	canvas.context.drawImage( sprite.img, source_x, source_y, frame.width, frame.height, location.x, location.y, dimensions.width, dimensions.height )
 }
 
