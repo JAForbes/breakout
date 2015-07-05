@@ -51,7 +51,7 @@ module.exports = {
 
 		var mouse = E.create({
 			Mouse: {},
-			Location: {x:0, y:0},
+			Location: {x:assets.images.bg.width/2, y:0},
 			TapTeleport: {}
 		})
 
