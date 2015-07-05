@@ -35,7 +35,9 @@ function remove(element, id){
 }
 
 function Element(){
+
 	_.each( E.category("Element"), function(element, id){
+
 		initialize(element, id)
 		update(element,id)
 		remove(element, id)

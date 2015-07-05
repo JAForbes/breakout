@@ -1,7 +1,16 @@
 var sprite = require("../engine/systems/sprite.js")
 
 module.exports = {
-	start: console.log.bind(console, "start", __filename ),
+	start: function () {
+		var assets = E.component(1, "Game").assets
+
+		var board = E.create({
+			Sprite: { img: assets.images.bg },
+			Location: { x: 0, y: 0},
+			StateLifespan: {}
+		})
+
+	},
 
 	systems: [].concat(
 		require("../engine/systems/canvas.js"),

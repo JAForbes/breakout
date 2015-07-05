@@ -10,6 +10,7 @@
   "author": "james.a.forbes@gmail.com <=> (http://james-forbes.com)",
   "license": "ISC",
   "dependencies": {
+    "hammerjs": "^2.0.4",
     "lodash": "^3.10.0",
     "lodash-fp": "^0.10.0"
   },

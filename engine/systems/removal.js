@@ -26,7 +26,7 @@ function RemoveEntity(){
 
 function RemoveComponent(){
 	_.each( E.category('RemoveComponent'), function(removeComponent,id){
-		E.remove(removeComponent.entity, removeComponent.name)
+		E.remove(removeComponent.entity || id, removeComponent.name)
 	})
 	delete E._components.RemoveComponent
 }

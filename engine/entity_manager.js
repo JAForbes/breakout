@@ -62,7 +62,8 @@ var EntityManager = {
   },
 
   each: function(category, visitor){
-    Object.keys(E._components[category]).forEach(function(entity){
+    var components = E._components[category]
+    components && Object.keys(components).forEach(function(entity){
       visitor( EntityManager.component(entity, category), entity)
     })
   },
@@ -96,7 +97,6 @@ var EntityManager = {
   },
 
   removeEntity: function(id){
-    console.log.apply(console, arguments)
     return EntityManager._entity_each(EntityManager._components, function(component, name){
       delete EntityManager._components[name][id]
     }, id)
