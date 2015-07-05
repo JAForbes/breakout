@@ -67,7 +67,7 @@ function draw_entity(entity) {
 	var rows = (end.y - start.y) / frame.height;
 	var source_x = start.x + (index  % cols) * frame.width;
 	var source_y = start.y + (index  % rows) * frame.height;
-	if(entity == 10) console.log(index, (index * frame.width))
+
 	canvas.context.drawImage( sprite.img, source_x, source_y, frame.width, frame.height, location.x, location.y, dimensions.width, dimensions.height )
 }
 
