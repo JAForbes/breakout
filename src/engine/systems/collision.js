@@ -6,7 +6,6 @@ var _ = {
 	clone: require("lodash/lang/clone")
 }
 
-
 systems.SAT = function(){
 
 

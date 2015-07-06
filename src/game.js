@@ -7,7 +7,6 @@ var load = require("./engine/load")
 var loop = require("./engine/loop")
 
 var game;
-console.log("testing watchify kramer!")
 
 E.create({
 	Game: game = {
@@ -64,5 +63,4 @@ Promise.all([
 	if(game.active.state == "loading"){
 		game.active.state = "intro"
 	}
-
 })
