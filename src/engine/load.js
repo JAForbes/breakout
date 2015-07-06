@@ -1,5 +1,9 @@
 //todo-james remove dependency later
-var _ = require("lodash")
+var _ = {
+	map: require("lodash/collection/map"),
+	keys: require("lodash/object/keys"),
+	object: require("lodash/array/object")
+}
 
 var load = {
 	image: function (src) {

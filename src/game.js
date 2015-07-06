@@ -1,9 +1,13 @@
-var _ = require("lodash")
+var _ = {
+	sample: require("lodash/collection/sample"),
+	map: require("lodash/collection/map")
+}
 var E = require("./engine/entity_manager")
 var load = require("./engine/load")
 var loop = require("./engine/loop")
 
 var game;
+console.log("testing watchify kramer!")
 
 E.create({
 	Game: game = {
@@ -41,11 +45,11 @@ E.create({
 
 var controller = loop(game)
 
-global.controller = controller
-global.game = game
-global.load = load
-global._ = _
-global.E = E
+// global.controller = controller
+// global.game = game
+// global.load = load
+// global._ = _
+// global.E = E
 //loading assets
 var images = _.map(game.assets.images, load.image)
 
@@ -57,5 +61,8 @@ Promise.all([
 	game.assets.sounds = loaded[1]
 	_.sample(game.assets.sounds).play()
 }).then(function(){
-	game.active.state = "intro"
+	if(game.active.state == "loading"){
+		game.active.state = "intro"
+	}
+
 })

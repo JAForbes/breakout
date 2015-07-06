@@ -62,7 +62,7 @@ var EntityManager = {
   },
 
   each: function(category, visitor){
-    var components = E._components[category]
+    var components = EntityManager._components[category]
     components && Object.keys(components).forEach(function(entity){
       visitor( EntityManager.component(entity, category), entity)
     })

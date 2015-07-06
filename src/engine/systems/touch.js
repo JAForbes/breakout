@@ -1,4 +1,4 @@
-var Hammer = require("hammerjs")
+var Hammer = require("hammerjs/hammer.min.js")
 var E = require("../entity_manager")
 
 function ontap(event){

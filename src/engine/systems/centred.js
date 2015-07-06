@@ -1,5 +1,8 @@
+var E = require("../entity_manager")
+
 function Centred(){
-	_.each(E.category("Centred"), function(alignment, entity){
+
+	E.each( "Centred" , function(alignment, entity){
 		var location = E.component(entity, "Location")
 		var	sprite = E.component(entity, "Sprite")
 

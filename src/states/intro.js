@@ -1,5 +1,4 @@
 var E = require("../engine/entity_manager.js")
-var _ = require("lodash")
 
 var sprite = require("../engine/systems/sprite.js")
 var hammer;

@@ -1,6 +1,11 @@
 var sprite = require("../engine/systems/sprite.js")
+var collision = require("../engine/systems/collision.js")
 
 var E = require("../engine/entity_manager")
+var _ = {
+	each: require("lodash/collection/each"),
+	keys: require("lodash/object/keys")
+}
 
 function TapTeleport(){
 	E.each("Tap", function(tap, entity){
@@ -40,6 +45,7 @@ function Constrain(){
 }
 
 var hammer;
+var mouse;
 
 module.exports = {
 	start: function () {
@@ -63,6 +69,9 @@ module.exports = {
 		})
 
 		var ball = E.create({
+			Velocity: { x:0, y:0 },
+			Gravity: { value: 1 },
+			Acceleration: { x:0, y: 0},
 			Frame: {
 				index: 0, play_speed: 0.2,
 				width: 16, height: 16,
@@ -72,10 +81,17 @@ module.exports = {
 			},
 			Sprite: { img: assets.images.tiles },
 			Location: { x: 100, y: 100},
-			Dimensions: { width: 16, height: 16 }
+			Dimensions: { width: 16, height: 16 },
+			CollidesWith: {
+				Solid: {
+					Bounce: {}
+				},
+			},
+			SAT: {}
 		});
 
 		var paddle = E.create({
+			Solid: {},
 			Frame: {
 				index: 0, play_speed: 0,
 				width: 48, height: 16,
@@ -87,7 +103,7 @@ module.exports = {
 			Location: {
 
 				//centred
-				x: assets.images.bg.width /2 - 24 ,
+				x: 20,
 
 				//3 rows from the bottom
 				y: assets.images.bg.height - 16 * 3
@@ -103,11 +119,17 @@ module.exports = {
 					x: { max: assets.images.bg.width - 48, min: 0 },
 				}
 			},
-			Dimensions: { width: 48, height: 16 }
+			Dimensions: { width: 48, height: 16 },
+			SAT: {}
 		})
 	},
 
 	systems: [].concat(
+		require("../engine/systems/movement.js"),
+		collision.SAT,
+		collision.CollidesWith,
+		collision.Uncollide,
+		collision.Bounce,
 		TapTeleport,
 		Sync,
 		Constrain,

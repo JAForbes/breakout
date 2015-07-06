@@ -57,7 +57,12 @@
 	},
 */
 
-var _ = require("lodash")
+var _ = {
+	cloneDeep: require("lodash/lang/cloneDeep"),
+	each: require("lodash/collection/each")
+}
+
+var E = require("../entity_manager")
 
 function Has(){
 	E.each("Has", function(has, entity){

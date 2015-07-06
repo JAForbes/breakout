@@ -2,20 +2,23 @@
   "name": "e",
   "version": "0.0.3",
   "description": "A breakout example using an Entity Component System",
-  "main": "e.js",
   "scripts": {
-    "build": "browserify game.js -o bundle.js",
-    "watch": "watchify game.js -o bundle.js --debug --verbose"
+    "watch": "watchify --debug src/game.js -o dist/breakout.js -v",
+    "watch-production": "watch \"cat dist/breakout.js | exorcist dist/breakout.js.map > dist/breakout.exorcist.js;  uglifyjs dist/breakout.exorcist.js --in-source-map dist/breakout.js.map  --source-map dist/breakout.min.js.map > dist/breakout.min.js\" src --wait 2"
   },
   "author": "james.a.forbes@gmail.com <=> (http://james-forbes.com)",
   "license": "ISC",
   "dependencies": {
     "hammerjs": "^2.0.4",
     "lodash": "^3.10.0",
-    "lodash-fp": "^0.10.0"
+    "lodash-fp": "^0.10.0",
+    "sat": "^0.5.0"
   },
   "devDependencies": {
-    "watchify": "~3.2.3",
-    "browserify": "~10.2.4"
+    "browserify": "~10.2.4",
+    "exorcist": "^0.4.0",
+    "uglify-js": "^2.4.23",
+    "watch": "^0.16.0",
+    "watchify": "^3.2.3"
   }
 }

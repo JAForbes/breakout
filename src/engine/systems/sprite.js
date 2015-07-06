@@ -1,6 +1,8 @@
 var E = require("../entity_manager")
-var _ = require("lodash")
-
+var _ = {
+	each: require("lodash/collection/each"),
+	sortBy: require("lodash/collection/sortBy")
+}
 var z_index_fallback = { value: Infinity }
 
 function z_index(entity){
@@ -54,21 +56,24 @@ function setup(){
 function draw_entity(entity) {
 
 	var sprite = E.component(entity, "Sprite")
-	var dimensions = E.component(entity, "Dimensions")
-	var frame = E.component(entity, "Frame")
-	var canvas = E.component(sprite.canvas, "Canvas")
-	var location = E.component(entity, "Location")
+	if(sprite.img instanceof Image) {
+
+		var dimensions = E.component(entity, "Dimensions")
+		var frame = E.component(entity, "Frame")
+		var canvas = E.component(sprite.canvas, "Canvas")
+		var location = E.component(entity, "Location")
 
 
-	var index = frame.total_frames == 1 ? 1 : Math.floor(frame.index += frame.play_speed)
-	var start = frame.start;
-	var end = frame.end;
-	var cols = (end.x - start.x) / frame.width;
-	var rows = (end.y - start.y) / frame.height;
-	var source_x = start.x + (index  % cols) * frame.width;
-	var source_y = start.y + (index  % rows) * frame.height;
+		var index = frame.total_frames == 1 ? 1 : Math.floor(frame.index += frame.play_speed)
+		var start = frame.start;
+		var end = frame.end;
+		var cols = (end.x - start.x) / frame.width;
+		var rows = (end.y - start.y) / frame.height;
+		var source_x = start.x + (index  % cols) * frame.width;
+		var source_y = start.y + (index  % rows) * frame.height;
 
-	canvas.context.drawImage( sprite.img, source_x, source_y, frame.width, frame.height, location.x, location.y, dimensions.width, dimensions.height )
+		canvas.context.drawImage( sprite.img, source_x, source_y, frame.width, frame.height, location.x, location.y, dimensions.width, dimensions.height )
+	}
 }
 
 

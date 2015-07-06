@@ -1,4 +1,8 @@
-var _ = require("lodash")
+var _ = {
+	each: require("lodash/collection/each"),
+	omit: require("lodash/object/omit"),
+}
+
 var E = require("../entity_manager.js")
 
 function RemoveEntity(){
