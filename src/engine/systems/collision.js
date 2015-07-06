@@ -121,11 +121,11 @@ systems.Bounce = function(){
 
 		if(overlapN.y){
 
-			acceleration.y += velocity.y * overlapN.y * -1
+			acceleration.y += Math.abs(velocity.y) * overlapN.y * -1
 			velocity.y = 0
 		}
 		if(overlapN.x){
-			acceleration.x += velocity.x * overlapV.x * -1
+			acceleration.x += Math.abs(velocity.x) * overlapN.x * -1
 			velocity.x = 0
 		}
 

@@ -68,8 +68,29 @@ module.exports = {
 			StateLifespan: {}
 		})
 
+		var walls = [
+			//left
+			[0,0,16, assets.images.bg.height],
+			//right
+			[assets.images.bg.width-16,0,16, assets.images.bg.height],
+			//top
+			[0,0, assets.images.bg.width, 16],
+		].map(function( options ){
+			var x = options[0]
+			var y = options[1]
+			var w = options[2]
+			var h = options[3]
+
+			return E.create({
+				Location: { x: x, y: y},
+				Dimensions: { width: w, height: h },
+				SAT: {},
+				Solid: {}
+			})
+		})
+
 		var ball = E.create({
-			Velocity: { x:0, y:0 },
+			Velocity: { x:2+Math.random(), y: 1+Math.random() },
 			Acceleration: { x:0, y: 0},
 			Frame: {
 				index: 0, play_speed: 0.2,
