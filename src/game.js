@@ -49,7 +49,7 @@ var controller = loop(game)
 // global.game = game
 // global.load = load
 // global._ = _
-// global.E = E
+global.E = E
 //loading assets
 var images = _.map(game.assets.images, load.image)
 

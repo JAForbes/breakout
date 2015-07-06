@@ -70,7 +70,6 @@ module.exports = {
 
 		var ball = E.create({
 			Velocity: { x:0, y:0 },
-			Gravity: { value: 1 },
 			Acceleration: { x:0, y: 0},
 			Frame: {
 				index: 0, play_speed: 0.2,
