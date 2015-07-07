@@ -4,6 +4,7 @@
   "description": "A breakout example using an Entity Component System",
   "main": "electron.js",
   "scripts": {
+    "build":"npm run dist & git add -A & git commit -m \"New Build\" & git pull & npm version patch & git push & git push --tags",
     "dist": "browserify src/game.js | uglifyjs -c > dist/breakout.min.js"
   },
   "author": "james.a.forbes@gmail.com <=> (http://james-forbes.com)",
