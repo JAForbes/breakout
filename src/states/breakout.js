@@ -12,6 +12,20 @@ _ = require("lodash")
 s = require("../engine/serialize")
 
 
+function OffsetRatio(){
+	E.each("OffsetRatio", function(offsetRatio, entity){
+		var location = E.component(entity, "Location")
+		var dimensions = E.component(entity, "Dimensions")
+
+		if( offsetRatio.x) {
+			location.x = location.x + offsetRatio.x * dimensions.width
+		}
+		if( offsetRatio.y) {
+			location.y = location.y + offsetRatio.y * dimensions.height
+		}
+	})
+}
+
 function TapTeleport(){
 	E.each("Tap", function(tap, entity){
 		if ( E.component(entity, "TapTeleport") ){
@@ -157,12 +171,16 @@ module.exports = {
 				//3 rows from the bottom
 				y: assets._images.bg.height - 16 * 3
 			},
-			Sync: {
-				//Get Location.x from entity that has type Mouse
-				Location: {
-					Mouse: ["x"]
-				}
-			},
+
+			//Sync paddle position with mouse, but offset by half of width
+				Sync: {
+					//Get Location.x from entity that has type Mouse
+					Location: {
+						Mouse: ["x"]
+					}
+				},
+				OffsetRatio: { x: -0.5 },
+
 			Constrain: {
 				Location: {
 					x: { max: assets._images.bg.width - 48, min: 0 },
@@ -174,6 +192,7 @@ module.exports = {
 	},
 
 	systems: [].concat(
+
 		require("../engine/systems/movement.js"),
 		collision.SAT,
 		collision.CollidesWith,
@@ -181,6 +200,7 @@ module.exports = {
 		collision.Bounce,
 		TapTeleport,
 		Sync,
+		OffsetRatio,
 		Constrain,
 		require("../engine/systems/canvas.js"),
 		sprite.setup,
