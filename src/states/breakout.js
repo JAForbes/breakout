@@ -172,9 +172,13 @@ module.exports = {
 			Dimensions: { width: 16, height: 16 },
 			CollidesWith: {
 				Solid: {
-					Bounce: {}
+					Bounce: {},
 				},
 			},
+			Sounds: {
+				Bounce: { sounds: [game.assets._sounds.brickDeath] }
+			},
+			Ball: {},
 			SAT: {},
 			Shrinker: {}
 		});
@@ -272,6 +276,7 @@ module.exports = {
 		sprite.setup,
 		require("../engine/systems/centred.js"),
 		sprite.draw,
+		require("../engine/systems/sounds.js"),
 		require("../engine/systems/removal.js")
 	),
 
