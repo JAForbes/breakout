@@ -8,8 +8,8 @@ function Centred(){
 
 		var canvas = E.component(sprite.canvas, "Canvas")
 
-		location.x = canvas.canvas.width / 2 - sprite.img.width / 2
-		location.y = canvas.canvas.height / 2 - sprite.img.height / 2
+		location.x = canvas._canvas.width / 2 - sprite._img.width / 2
+		location.y = canvas._canvas.height / 2 - sprite._img.height / 2
 
 	})
 

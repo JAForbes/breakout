@@ -1,9 +1,7 @@
-function execute(func){ func() }
-
-function transitions(last_state, active_state){
+function transitions(game, last_state, active_state){
 	if(last_state != active_state){
-		last_state && last_state.end()
-		active_state && active_state.start()
+		last_state && last_state.end(game)
+		active_state && active_state.start(game)
 	}
 	return active_state;
 }
@@ -26,13 +24,15 @@ function init(game){
 	function loop(){
 		var active_state = game.states[game.active.state]
 
-		last_state = transitions( last_state, active_state )
+		last_state = transitions( game, last_state, active_state )
 
 		if(running){
 
 			(active_state || placeholder)
 				.systems
-				.forEach(execute)
+				.forEach(function(func){
+					func(game)
+				})
 
 
 			requestAnimationFrame(loop)

@@ -7,9 +7,9 @@ function Canvas(){
 		.forEach(function(entity){
 			var canvas = canvases[entity]
 			canvas.ratio = canvas.ratio || { width: 1, height: 1}
-			canvas.context = canvas.context || canvas.canvas.getContext("2d")
-			canvas.canvas.width = canvas.parent.offsetWidth * canvas.ratio.width
-			canvas.canvas.height = canvas.parent.offsetHeight * canvas.ratio.height
+			canvas.context = canvas.context || canvas._canvas.getContext("2d")
+			canvas._canvas.width = canvas._parent.offsetWidth * canvas.ratio.width
+			canvas._canvas.height = canvas._parent.offsetHeight * canvas.ratio.height
 		})
 
 }

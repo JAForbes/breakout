@@ -4,8 +4,13 @@ var collision = require("../engine/systems/collision.js")
 var E = require("../engine/entity_manager")
 var _ = {
 	each: require("lodash/collection/each"),
-	keys: require("lodash/object/keys")
+	keys: require("lodash/object/keys"),
+	cloneDeep: require("lodash/lang/cloneDeep")
 }
+
+_ = require("lodash")
+s = require("../engine/serialize")
+
 
 function TapTeleport(){
 	E.each("Tap", function(tap, entity){
@@ -48,33 +53,57 @@ var hammer;
 var mouse;
 
 module.exports = {
-	start: function () {
+	start: function (game) {
+
+
+		//todo-james replace with Has Key S/R later
+			var savegame = {}
+			window.onkeydown = function(e){
+
+				if(e.keyCode == 83){
+					savegame = s.serialize(E._components)
+				} else if (e.keyCode == 82){
+					var load_state = _.cloneDeep(savegame)
+					s.deserialize(load_state, E._components)
+					_.merge(E._components, load_state)
+				}
+
+			}
 
 		hammer = require("../engine/systems/touch.js")(game_content)
 		mouse = require("../engine/systems/mouse.js")(game_content)
 
+
+		var assets = game.assets
+
 		game_canvas.style.cursor = "none";
-		var assets = E.component(1, "Game").assets
+		var canvas = E.create({
+			Canvas: {
+				_canvas: game_canvas,
+				_parent: game_content
+			},
+			StateLifespan: {}
+		})
 
 		var mouse = E.create({
 			Mouse: {},
-			Location: {x:assets.images.bg.width/2, y:0},
+			Location: {x:assets._images.bg.width/2, y:0},
 			TapTeleport: {}
 		})
 
 		var board = E.create({
-			Sprite: { img: assets.images.bg },
+			Sprite: { _img: assets._images.bg },
 			Location: { x: 0, y: 0},
 			StateLifespan: {}
 		})
 
 		var walls = [
 			//left
-			[0,0,16, assets.images.bg.height],
+			[0,0,16, assets._images.bg.height],
 			//right
-			[assets.images.bg.width-16,0,16, assets.images.bg.height],
+			[assets._images.bg.width-16,0,16, assets._images.bg.height],
 			//top
-			[0,0, assets.images.bg.width, 16],
+			[0,0, assets._images.bg.width, 16],
 		].map(function( options ){
 			var x = options[0]
 			var y = options[1]
@@ -99,7 +128,7 @@ module.exports = {
 				end: { x: 16*7, y: 16*5},
 				total_frames: 5
 			},
-			Sprite: { img: assets.images.tiles },
+			Sprite: { _img: assets._images.tiles },
 			Location: { x: 100, y: 100},
 			Dimensions: { width: 16, height: 16 },
 			CollidesWith: {
@@ -119,14 +148,14 @@ module.exports = {
 				end: { x: 48*1, y: 16*5},
 				total_frames: 1
 			},
-			Sprite: { img: assets.images.tiles },
+			Sprite: { _img: assets._images.tiles },
 			Location: {
 
 				//centred
 				x: 20,
 
 				//3 rows from the bottom
-				y: assets.images.bg.height - 16 * 3
+				y: assets._images.bg.height - 16 * 3
 			},
 			Sync: {
 				//Get Location.x from entity that has type Mouse
@@ -136,7 +165,7 @@ module.exports = {
 			},
 			Constrain: {
 				Location: {
-					x: { max: assets.images.bg.width - 48, min: 0 },
+					x: { max: assets._images.bg.width - 48, min: 0 },
 				}
 			},
 			Dimensions: { width: 48, height: 16 },

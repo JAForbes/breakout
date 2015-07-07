@@ -4,20 +4,28 @@ var sprite = require("../engine/systems/sprite.js")
 var hammer;
 
 module.exports = {
-	start: function(){
+	start: function(game){
 
 		hammer = require("../engine/systems/touch.js")(game_content)
 
-		var assets = E.component(1, "Game").assets
+		var assets = game.assets
+
+		var canvas = E.create({
+			Canvas: {
+				_canvas: game_canvas,
+				_parent: game_content
+			},
+			StateLifespan: {}
+		})
 
 		var board = E.create({
-			Sprite: { img: assets.images.bg },
+			Sprite: { _img: assets._images.bg },
 			Location: { x: 0, y: 0},
 			StateLifespan: {}
 		})
 
 		var logo = E.create({
-			Sprite: { img: assets.images.logo },
+			Sprite: { _img: assets._images.logo },
 			Location: { x: 0, y: 0},
 			Centred: {},
 			StateLifespan: {}
@@ -32,7 +40,7 @@ module.exports = {
 				className: "dynamic-position black"
 			},
 			Location: { x:0, y: 300 },
-			Dimensions: { width: assets.images.bg.width, height: 50 },
+			Dimensions: { width: assets._images.bg.width, height: 50 },
 			StateLifespan: {}
 		})
 

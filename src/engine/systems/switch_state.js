@@ -1,10 +1,9 @@
 var E = require("../entity_manager")
-function SwitchState(){
+function SwitchState(game){
 
 	var state_changed = false;
 
 	E.each("SwitchState", function(switch_state, entity){
-		var game = E.component(switch_state.game, "Game")
 		if(game){
 			game.active.state = switch_state.value
 			state_changed = true;

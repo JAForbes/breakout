@@ -10,7 +10,7 @@ function z_index(entity){
 }
 
 function default_dimensions(sprite){
-	return { width: sprite.img.width, height: sprite.img.height }
+	return { width: sprite._img.width, height: sprite._img.height }
 }
 
 function default_frame(sprite){
@@ -21,12 +21,12 @@ function default_frame(sprite){
 		//usually would be a small number like 1e-2
 		play_speed: 0,
 
-		width: sprite.img.width,
-		height: sprite.img.height,
+		width: sprite._img.width,
+		height: sprite._img.height,
 		//where does the first frame start
 		start: { x:0, y:0 },
 		//where does the rectangle containing all the frames end
-		end: { x: sprite.img.width, y: sprite.img.height },
+		end: { x: sprite._img.width, y: sprite._img.height },
 
 		total_frames: 1
 	}
@@ -56,7 +56,7 @@ function setup(){
 function draw_entity(entity) {
 
 	var sprite = E.component(entity, "Sprite")
-	if(sprite.img instanceof Image) {
+	if(sprite._img instanceof Image) {
 
 		var dimensions = E.component(entity, "Dimensions")
 		var frame = E.component(entity, "Frame")
@@ -72,7 +72,7 @@ function draw_entity(entity) {
 		var source_x = start.x + (index  % cols) * frame.width;
 		var source_y = start.y + (index  % rows) * frame.height;
 
-		canvas.context.drawImage( sprite.img, source_x, source_y, frame.width, frame.height, location.x, location.y, dimensions.width, dimensions.height )
+		canvas.context.drawImage( sprite._img, source_x, source_y, frame.width, frame.height, location.x, location.y, dimensions.width, dimensions.height )
 	}
 }
 
