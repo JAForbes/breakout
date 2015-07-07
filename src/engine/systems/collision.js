@@ -64,7 +64,7 @@ systems.SAT = function(){
 				bCaresAboutA = bCaresAbout.entities[a]
 				if(bCaresAboutA){
 					var bCollided = E.component(b, "Collided") || {}
-					;(bCollided.collisions = bCollided.collisions || {})[b] = {response: response}
+					;(bCollided.collisions = bCollided.collisions || {})[a] = {response: response}
 					E.addComponent("Collided", bCollided, b)
 				}
 			}

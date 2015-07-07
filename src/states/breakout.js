@@ -26,6 +26,31 @@ function OffsetRatio(){
 	})
 }
 
+function Shrink(){
+	E.each("Shrink", function(shrink, entity){
+		var dimensions = E.component(entity, "Dimensions")
+		var location = E.component(entity, "Location")
+
+		if(dimensions.width < 1e-1){
+
+			E.add(entity, shrink.components)
+
+		} else {
+			var w = dimensions.width * shrink.ratio
+			var h = dimensions.height * shrink.ratio
+
+			var dw = dimensions.width - w
+			var dh = dimensions.height - h
+
+			location.x += dw /2
+			location.y += dh /2
+
+			dimensions.width = w
+			dimensions.height = h
+		}
+	})
+}
+
 function TapTeleport(){
 	E.each("Tap", function(tap, entity){
 		if ( E.component(entity, "TapTeleport") ){
@@ -143,14 +168,15 @@ module.exports = {
 				total_frames: 5
 			},
 			Sprite: { _img: assets._images.tiles },
-			Location: { x: 100, y: 100},
+			Location: { x: 100, y: 300},
 			Dimensions: { width: 16, height: 16 },
 			CollidesWith: {
 				Solid: {
 					Bounce: {}
 				},
 			},
-			SAT: {}
+			SAT: {},
+			Shrinker: {}
 		});
 
 		var paddle = E.create({
@@ -160,7 +186,7 @@ module.exports = {
 				width: 48, height: 16,
 				start: { x:48*0, y: 16*4 },
 				end: { x: 48*1, y: 16*5},
-				total_frames: 1
+				total_frames: 1,
 			},
 			Sprite: { _img: assets._images.tiles },
 			Location: {
@@ -171,7 +197,7 @@ module.exports = {
 				//3 rows from the bottom
 				y: assets._images.bg.height - 16 * 3
 			},
-
+			Dimensions: { width: 48, height: 16 },
 			//Sync paddle position with mouse, but offset by half of width
 				Sync: {
 					//Get Location.x from entity that has type Mouse
@@ -186,8 +212,47 @@ module.exports = {
 					x: { max: assets._images.bg.width - 48, min: 0 },
 				}
 			},
-			Dimensions: { width: 48, height: 16 },
+
 			SAT: {}
+		})
+
+		var n_blocks = 5
+		var block_width = 32
+		var block_height = 16
+		var rows = 4;
+		var blocks = _.times(rows,function(j){
+			return _.times(n_blocks, function(i){
+
+				return  E.create({
+					Solid: {},
+					Frame: {
+						index: 0, play_speed: 0,
+						width: block_width, height: block_height,
+						start: { x:block_width*0, y: block_height*(0+j) },
+						end: { x: block_width*1, y: block_height*(1 +j)},
+						total_frames: 1
+					},
+					Sprite: { _img: assets._images.tiles },
+					Location: {
+
+						//centred
+						x: (block_width * i) + (assets._images.bg.width / 2) - (block_width * n_blocks * 0.5),
+
+						//3 rows from the bottom
+						y: block_height * (3 + j)
+					},
+					CollidesWith: {
+						Shrinker: {
+							Shrink: {
+								ratio: 0.9,
+								components: { Remove: {} }
+							}
+						}
+					},
+					Dimensions: { width: block_width, height: block_height },
+					SAT: {}
+				})
+			})
 		})
 	},
 
@@ -198,6 +263,7 @@ module.exports = {
 		collision.CollidesWith,
 		collision.Uncollide,
 		collision.Bounce,
+		Shrink,
 		TapTeleport,
 		Sync,
 		OffsetRatio,
