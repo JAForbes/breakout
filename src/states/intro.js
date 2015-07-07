@@ -32,7 +32,7 @@ module.exports = {
 				className: "dynamic-position black"
 			},
 			Location: { x:0, y: 300 },
-			Dimensions: { width: assets.images.bg.width, height: 200 },
+			Dimensions: { width: assets.images.bg.width, height: 50 },
 			StateLifespan: {}
 		})
 
