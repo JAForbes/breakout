@@ -4,8 +4,7 @@
   "description": "A breakout example using an Entity Component System",
   "main": "electron.js",
   "scripts": {
-    "watch": "watchify --debug src/game.js -o dist/breakout.js -v",
-    "watch-production": "watch \"cat dist/breakout.js | exorcist dist/breakout.js.map > dist/breakout.exorcist.js & uglifyjs dist/breakout.exorcist.js --in-source-map dist/breakout.js.map  --source-map dist/breakout.min.js.map --compress > dist/breakout.min.js\" src --wait 2"
+    "dist": "browserify src/game.js | uglifyjs -c > dist/breakout.min.js"
   },
   "author": "james.a.forbes@gmail.com <=> (http://james-forbes.com)",
   "license": "ISC",
