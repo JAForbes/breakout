@@ -190,9 +190,9 @@ function WinCondition(){
 		var no_blocks = Object.keys( E.category("Block") ).length == 0
 
 		if( no_blocks ){
-			console.log("Winner")
+			alert("Winner")
 		} else if ( no_balls ) {
-			console.log("Loser")
+			alert("Loser")
 		}
 
 	})

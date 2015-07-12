@@ -4,9 +4,11 @@
   "description": "A breakout example using an Entity Component System",
   "main": "electron.js",
   "scripts": {
-    "build": "npm run dist & git add -A & git commit -m \"New Build\" & git pull & npm version patch & git push & git push --tags",
-    "dist": "browserify src/game.js | uglifyjs -c > dist/breakout.min.js",
-    "debug-dist": "browserify src/game.js --debug | exorcist dist/breakout.js.map | uglifyjs -c -m > dist/breakout.min.js"
+    "bundle": "browserify src/game.js --debug | exorcist dist/breakout.js.map > dist/breakout.js",
+    "minifiy": "uglifyjs dist/breakout.js --in-source-map dist/breakout.js.map --source-map-url breakout.min.js.map --source-map dist/breakout.min.js.map -o dist/breakout.min.js",
+    "clean": "rm breakout.js breakout.js.map",
+    "win-debug-dist": "npm run bundle & npm run minifiy & npm run clean",
+    "win-build": "npm run win-debug-dist & git add -A & git commit -m \"New Build\" & git pull & npm version patch & git push & git push --tags"
   },
   "author": "james.a.forbes@gmail.com <=> (http://james-forbes.com)",
   "license": "ISC",
