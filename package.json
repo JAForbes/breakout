@@ -6,9 +6,9 @@
   "scripts": {
     "bundle": "browserify src/game.js --debug | exorcist dist/breakout.js.map > dist/breakout.js",
     "minifiy": "uglifyjs dist/breakout.js --in-source-map dist/breakout.js.map --source-map-url breakout.min.js.map --source-map dist/breakout.min.js.map -o dist/breakout.min.js",
-    "clean": "rm breakout.js breakout.js.map",
+    "clean": "rm dist/breakout.js dist/breakout.js.map",
     "win-debug-dist": "npm run bundle & npm run minifiy & npm run clean",
-    "win-build": "npm run win-debug-dist & git add -A & git commit -m \"New Build\" & git pull & npm version patch & git push & git push --tags"
+    "win-release": "npm run win-debug-dist & git add -A & git commit -m \"New Release\" & git pull & npm version patch & git push & git push --tags"
   },
   "author": "james.a.forbes@gmail.com <=> (http://james-forbes.com)",
   "license": "ISC",
