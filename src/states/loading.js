@@ -1,7 +1,7 @@
 module.exports = {
-	start: console.log.bind(console, "start", __filename ),
+	start: function(){},
 
-	systems: [	console.log.bind(console, __filename) ],
+	systems: [],
 
-	end: console.log.bind(console, "end", __filename )
+	end: function(){}
 }

@@ -5,6 +5,7 @@ var _ = {
 var E = require("./engine/entity_manager")
 var load = require("./engine/load")
 var loop = require("./engine/loop")
+var Promise = require("bluebird")
 
 var game = {
 	active: {
@@ -43,6 +44,8 @@ global._ = _
 global.E = E
 // loading assets
 var images = _.map(game.assets.images, load.image)
+
+Promise || console.log("Promise is not defined")
 
 Promise.all([
 	load.group(load.image, game.assets.images),

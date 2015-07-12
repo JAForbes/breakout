@@ -16,10 +16,9 @@ function update(element, id){
 	var location = E.component(id, "Location")
 	var dimensions = E.component(id, "Dimensions")
 
-	element._element.style.left = location.x
-	element._element.style.top = location.y
-	element._element.style.width = dimensions.width
-	element._element.style.height = dimensions.height
+	element._element.style.transform = "translate("+location.x+"px,"+location.y+"px)"
+	element._element.style.width = dimensions.width + "px"
+	element._element.style.height = dimensions.height + "px"
 }
 
 function remove(element, id){
@@ -38,7 +37,6 @@ function Element(){
 
 
 	E.each("Element", function(element, id){
-
 		initialize(element, id)
 		update(element,id)
 		remove(element, id)

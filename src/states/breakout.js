@@ -12,6 +12,100 @@ _ = require("lodash")
 s = require("../engine/serialize")
 
 
+//Mixes in keys to a component, can be used with replacement components to mixin
+function Update(){
+	E.each("Update", function(update, entity){
+		_.each( update, function(component, component_name){
+			var existing = E.component(entity, component_name)
+
+			E.addComponent(
+				component_name,
+				_.merge(
+					existing || {},
+					_.cloneDeep(component)
+				),
+				entity
+			)
+		})
+	})
+	E.category("Update") && E.create({
+		RemoveCategory: { name: "Update" }
+	})
+}
+
+//Grabs the contents of a named component and replaces it in with E.add(entity, contents)
+/*
+	After the Activate system ran.  This entity would have a x position of 0:
+
+		Mode1: {
+			Position: { x:0, y:0 }
+		},
+		Position: { x:10, y: 0},
+		Activate: { modes: ["Mode1"] }
+*/
+function Activate(){
+	E.each("Activate", function(activate, entity){
+		activate.modes.forEach(function(mode_name){
+			var mode = E.component(entity, mode_name)
+
+
+			E.add(entity,
+				_.cloneDeep(mode)
+			)
+		})
+	})
+	E.category("Activate") && E.create({
+		RemoveCategory: { name: "Activate" }
+	})
+}
+
+//waits n millis then replaces components from the contents into the entity
+/*
+	Time: {
+		1000: {
+			Activate: { modes: ["Two"] }
+		}
+	}
+*/
+function Time(){
+	var now = new Date().getTime();
+	var digit = /\d/
+	E.each("Time", function(time, entity){
+		if(!time._created){ time._created = now }
+
+		_.each(time, function(components, millis_string){
+			if(millis_string.match(digit)){
+				var millis = parseInt(millis_string,10)
+				var delta = now - time._created
+				if( delta > millis  ){
+					E.add(
+						entity,
+						_.cloneDeep(components)
+					)
+					E.addComponent("RemoveComponents", {
+						names: ["Time"]
+					}, entity)
+				}
+			}
+
+		})
+	})
+}
+
+function Once(){
+	E.each("Once",function(components, entity){
+		E.add(
+			entity,
+			_.cloneDeep(components)
+		)
+		E.addComponent("RemoveComponents", {
+			names: Object.keys(components).concat("Once")
+		}, entity)
+	})
+}
+
+
+
 function OffsetRatio(){
 	E.each("OffsetRatio", function(offsetRatio, entity){
 		var location = E.component(entity, "Location")
@@ -88,12 +182,31 @@ function Constrain(){
 	})
 }
 
+function WinCondition(){
+	E.each("WinCondition", function(winCondition, entity){
+
+		var no_balls = Object.keys( E.category("Ball") ).length == 0
+
+		var no_blocks = Object.keys( E.category("Block") ).length == 0
+
+		if( no_blocks ){
+			console.log("Winner")
+		} else if ( no_balls ) {
+			console.log("Loser")
+		}
+
+	})
+}
+
 var hammer;
 var mouse;
 
 module.exports = {
 	start: function (game) {
-
+		var cloneCreate = _.compose(
+			E.create,
+			_.cloneDeep
+		)
 
 		//todo-james replace with Has Key S/R later
 			var savegame = {}
@@ -136,6 +249,76 @@ module.exports = {
 			StateLifespan: {}
 		})
 
+
+		var Countdown = {
+			Location: {
+				x: (assets._images.bg.width/2) - 16,
+				y: 200
+			},
+			Dimensions: { width: 32, height: 16*3 },
+			Frame: {
+				index: 0, play_speed: 0,
+				width: 16*2, height: 16*3,
+				start: { x:16*0, y: 16*6 },
+				end: { x: 16*6, y: 16*9},
+				total_frames: 3
+			},
+			Sprite: { _img: assets._images.tiles },
+			Activate: { modes: ["Three"] },
+
+			Three: {
+				Update: { Frame: { index: 0 } },
+				Time: {
+					1000: {
+						Activate: { modes: ["Two"] }
+					}
+				},
+				Once: {
+					ThreeStart: {}
+				}
+			},
+
+			Two: {
+				Update: { Frame: { index: 1 } },
+				Time: {
+					1000: {
+						Activate: {
+							modes: ["One"]
+						}
+					}
+				},
+				Once: {
+					TwoStart: {}
+				}
+			},
+
+			One: {
+				Update: { Frame: { index: 2 } },
+				Time: {
+					1000: {
+						Activate: {
+							modes: ["End"]
+						}
+					}
+				},
+				Once: {
+					OneStart: {}
+				}
+			},
+			Sounds: {
+				ThreeStart: { sounds: [game.assets._sounds.countdownBlip] },
+				TwoStart: { sounds: [game.assets._sounds.countdownBlip] },
+				OneStart: { sounds: [game.assets._sounds.countdownBlip] },
+			},
+			End: {
+				Remove: {}
+			},
+		}
+
+
+
+		var countdown = cloneCreate( Countdown )
+
 		var walls = [
 			//left
 			[0,0,16, assets._images.bg.height],
@@ -157,8 +340,13 @@ module.exports = {
 			})
 		})
 
-		var ball = E.create({
-			Velocity: { x:2+Math.random(), y: 1+Math.random() },
+		var Ball = {
+			Time: {
+				3000: {
+					Velocity: { x:4+Math.random(), y: 4+Math.random() },
+				}
+			},
+			Velocity: { x:0, y:0},
 			Acceleration: { x:0, y: 0},
 			Frame: {
 				index: 0, play_speed: 0.2,
@@ -174,14 +362,50 @@ module.exports = {
 				Solid: {
 					Bounce: {},
 				},
+				Block: {
+					Bounce: {},
+					Once: {
+						BlockBounce: {},
+						WinCondition: {}
+					}
+				},
+				EdgeTrigger: {
+					Remove: {}
+				}
 			},
 			Sounds: {
-				Bounce: { sounds: [game.assets._sounds.brickDeath] }
+				BlockBounce: { sounds: [game.assets._sounds.brickDeath] }
 			},
 			Ball: {},
 			SAT: {},
 			Shrinker: {}
+		}
+
+		cloneCreate(Ball)
+
+		var bottomEdge = E.create({
+			EdgeTrigger: {},
+			Location: { x:0 , y: game.assets._images.bg.height },
+			Dimensions: { width: game.assets._images.bg.width, height: 16 },
+			Frame: {
+				index: 0, play_speed: 0.2,
+				width: 16, height: 16,
+				start: { x:16*3, y: 16*4 },
+				end: { x: 16*7, y: 16*5},
+				total_frames: 5
+			},
+			CollidesWith: {
+				Ball: {
+					Once: {
+						WinCondition: {}
+					}
+				}
+			},
+			Sprite: { _img: assets._images.tiles },
+			SAT: {}
 		});
+
+
 
 		var paddle = E.create({
 			Solid: {},
@@ -220,15 +444,17 @@ module.exports = {
 			SAT: {}
 		})
 
-		var n_blocks = 5
+		var n_blocks = 1
 		var block_width = 32
 		var block_height = 16
-		var rows = 4;
+		var rows = 1;
+
 		var blocks = _.times(rows,function(j){
 			return _.times(n_blocks, function(i){
 
 				return  E.create({
 					Solid: {},
+					Block: {},
 					Frame: {
 						index: 0, play_speed: 0,
 						width: block_width, height: block_height,
@@ -250,6 +476,9 @@ module.exports = {
 							Shrink: {
 								ratio: 0.9,
 								components: { Remove: {} }
+							},
+							RemoveComponents: {
+								names: ["Block"]
 							}
 						}
 					},
@@ -263,6 +492,11 @@ module.exports = {
 	systems: [].concat(
 
 		require("../engine/systems/movement.js"),
+		Once,
+		WinCondition,
+		Activate,
+		Time,
+		Update,
 		collision.SAT,
 		collision.CollidesWith,
 		collision.Uncollide,

@@ -1,3 +1,5 @@
+var Promise = require("bluebird")
+
 //todo-james remove dependency later
 var _ = {
 	map: require("lodash/collection/map"),

@@ -5,7 +5,8 @@
   "main": "electron.js",
   "scripts": {
     "build": "npm run dist & git add -A & git commit -m \"New Build\" & git pull & npm version patch & git push & git push --tags",
-    "dist": "browserify src/game.js | uglifyjs -c > dist/breakout.min.js"
+    "dist": "browserify src/game.js | uglifyjs -c > dist/breakout.min.js",
+    "debug-dist": "browserify src/game.js --debug | exorcist dist/breakout.js.map | uglifyjs -c -m > dist/breakout.min.js"
   },
   "author": "james.a.forbes@gmail.com <=> (http://james-forbes.com)",
   "license": "ISC",

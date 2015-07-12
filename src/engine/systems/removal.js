@@ -28,11 +28,13 @@ function RemoveEntity(){
 	})
 }
 
-function RemoveComponent(){
-	_.each( E.category('RemoveComponent'), function(removeComponent,id){
-		E.remove(removeComponent.entity || id, removeComponent.name)
+function RemoveComponents(){
+	_.each( E.category('RemoveComponents'), function(removeComponents,id){
+		removeComponents.names.map(
+			E.remove.bind(null, removeComponents.entity || id )
+		)
 	})
-	delete E._components.RemoveComponent
+	delete E._components.RemoveComponents
 }
 
 function RemoveCategory(){
@@ -54,7 +56,7 @@ function DeleteEntity(){
 
 module.exports = [
 	DeleteEntity,
-	RemoveComponent,
+	RemoveComponents,
 	RemoveCategory,
 	RemoveEntity
 ]
