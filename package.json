@@ -1,6 +1,6 @@
 {
   "name": "e",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A breakout example using an Entity Component System",
   "main": "electron.js",
   "scripts": {
