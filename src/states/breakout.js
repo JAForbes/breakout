@@ -182,6 +182,28 @@ function Constrain(){
 	})
 }
 
+
+function Random(){
+	E.each("Random", function(random, entity){
+		_.each(random, function(config, category){
+			var current = E.component(entity, category) || {}
+
+			_.each(config, function(property_config, property_name){
+				//x: { min: 2, max: 5, polarity: true },
+				current[property_name] = _.random( property_config.min, property_config.max )
+				if(property_config.polarity){
+					var polarity = Math.random() > 0.5 ? 1 : -1
+					current[property_name] *= polarity
+				}
+			})
+
+			E.addComponent(category,current,entity)
+		})
+
+		E.addComponent("RemoveComponents", {names: ["Random"]}, entity)
+	})
+}
+
 function WinCondition(){
 	E.each("WinCondition", function(winCondition, entity){
 
@@ -343,7 +365,12 @@ module.exports = {
 		var Ball = {
 			Time: {
 				3000: {
-					Velocity: { x:4+Math.random(), y: 4+Math.random() },
+					Random: {
+						Velocity: {
+							x: { min: 2, max: 5, polarity: true },
+							y: { min: 2, max: 5, polarity: true },
+						}
+					},
 				}
 			},
 			Velocity: { x:0, y:0},
@@ -381,6 +408,8 @@ module.exports = {
 			Shrinker: {}
 		}
 
+		cloneCreate(Ball)
+		cloneCreate(Ball)
 		cloneCreate(Ball)
 
 		var bottomEdge = E.create({
@@ -490,7 +519,7 @@ module.exports = {
 	},
 
 	systems: [].concat(
-
+		Random,
 		require("../engine/systems/movement.js"),
 		Once,
 		WinCondition,
